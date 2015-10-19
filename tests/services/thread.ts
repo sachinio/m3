@@ -2,15 +2,18 @@
 /// <reference path="../../typedefs/jasmine.d.ts"/>
 
 module m3tests {
-    describe('Thread',() => {
+    interface IMockery{
+        value: number;
+    }
+    describe('Worker',() => {
         it('exec function',(done)=> {
-            function loopy(num) {
-                var total = 0;
-                for(var i=0; i< num;i++) total+=1;
+            function loopy(m: IMockery) {
+                let total = 0;
+                for(let i=0; i< m.value;i++) total+=1;
                 return total;
             }
 
-            m3.services.Thread.exec(loopy, [10], (data) => {
+            m3.services.Thread.run(loopy, [{value:10}]).then((data) => {
                 expect(data).toBe(10);
                 done();
             });
