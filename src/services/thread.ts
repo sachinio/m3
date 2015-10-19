@@ -45,7 +45,7 @@ module m3.services {
         export function exec(fn, args, cb) {
             var URL = (<any>window).URL || (<any>window).webkitURL;
             var Blob = (<any>window).Blob;
-            var Worker = (<any>window).Worker;
+            var Worker: any = (<any>window).Worker;
 
             if (!URL || !Blob || !Worker || !script) {
                 return null;
@@ -53,8 +53,8 @@ module m3.services {
 
             var blob = new (<any>window).Blob([script]);
 
-            var worker = new (<any>window).Worker(URL.createObjectURL(blob)),
-                obj = {fn: fn, args: args, cntx: false, imprt: false};
+            var worker = new Worker(URL.createObjectURL(blob));
+            var obj = {fn: fn, args: args, cntx: false, imprt: false};
 
             worker.onmessage = function (oEvent) {
                 cb(oEvent.data);

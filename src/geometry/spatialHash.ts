@@ -18,8 +18,8 @@ module m3.geometry {
         }
 
         public insert(dataPoint:ISpatialHashDataPoint):void {
-            var key = this.createKey(dataPoint.position);
-            var grid = this.grid;
+            let key = this.createKey(dataPoint.position);
+            let grid = this.grid;
 
             if (!grid[key]) {
                 grid[key] = [];
@@ -33,7 +33,7 @@ module m3.geometry {
         }
 
         private createKey(point:IPoint) {
-            var cellSize = this.cellSize;
+            let cellSize = this.cellSize;
             return Math.floor(point.x / cellSize) * cellSize + ' ' +
                 Math.floor(point.y / cellSize) * cellSize;
         }
