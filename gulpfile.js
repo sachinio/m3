@@ -4,12 +4,14 @@ var jasmine = require('gulp-jasmine-phantom');
 var stripDebug = require('gulp-strip-debug');
 var del = require('del');
 
-gulp.task('default', function () {
-    gulp.watch('src/**/*.ts', ['compile:src'])
+gulp.task('default', ['compile:src'], function () {});
+
+gulp.task('watch', function () {
+    return gulp.watch('src/**/*.ts', ['compile:src'])
 });
 
 gulp.task('compile:src', function(){
-    gulp.src(['src/**/*.ts'])
+    return gulp.src(['src/**/*.ts'])
         .pipe(typescript({out:'m3.js'}))
         .pipe(gulp.dest('bin/debug'))
         .pipe(stripDebug())
