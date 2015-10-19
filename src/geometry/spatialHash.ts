@@ -28,7 +28,7 @@ module m3.geometry {
             grid[key].push(dataPoint);
         }
 
-        public find(point:ISpatialHashDataPoint) {
+        public closest(point:ISpatialHashDataPoint) {
             return this.grid[this.createKey(point.position)];
         }
 

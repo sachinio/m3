@@ -11,7 +11,7 @@ module m3tests {
             hash.insert({ position:{ x: 110, y: 100 }});
             hash.insert({ position:{ x: 120, y: 100 }});
 
-            var points = hash.find({ position:{ x: 100, y: 100 }});
+            var points = hash.closest({ position:{ x: 100, y: 100 }});
 
             expect(points.length).toBe(1);
             expect(points[0].position.x).toBe(100);
