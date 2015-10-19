@@ -1,0 +1,13 @@
+{
+  "name": "m3",
+  "license": "MIT",
+  "author": "Sachin Patney",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sachinio/m3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-tsc": "^1.1.1"
+  }
+}
