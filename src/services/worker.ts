@@ -1,4 +1,3 @@
-/// <reference path="../../typedefs/m3.d.ts"/>
 module m3.services{
     export interface IWorker{
         onmessage: (d:any)=>void;
