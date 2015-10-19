@@ -11,4 +11,4 @@ var spatial = new m3.geometry.SpatialHash(10);
 spatial.insert({position: {x: 10, y: 10}});
 console.log(spatial.find({position: {x: 10, y: 10}}));
 
-console.log(textSize);
+window.console.log(textSize);

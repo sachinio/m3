@@ -12,7 +12,9 @@ module m3.services {
 
             var ctx = element.getContext('2d');
             ctx.font = properties.fontFamily + ' ' + properties.fontSize;
-            return ctx.measureText(properties.text).width;
+            var width = ctx.measureText(properties.text).width;
+            console.log(width);
+            return width;
         }
     }
 }

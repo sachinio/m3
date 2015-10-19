@@ -7,8 +7,10 @@
     "url": "https://github.com/sachinio/m3"
   },
   "devDependencies": {
+    "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-jasmine-phantom": "^2.0.1",
+    "gulp-strip-debug": "^1.0.2",
     "gulp-tsc": "^1.1.1"
   }
 }
