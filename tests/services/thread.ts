@@ -13,7 +13,7 @@ module m3tests {
                 return total;
             }
 
-            m3.services.Thread.run(loopy, [{value:10}]).then((data) => {
+            m3.services.Thread.run(loopy, [{value:10}],(data) => {
                 expect(data).toBe(10);
                 done();
             });

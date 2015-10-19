@@ -3,8 +3,6 @@ var typescript = require('gulp-tsc');
 var jasmine = require('gulp-jasmine-phantom');
 var stripDebug = require('gulp-strip-debug');
 var del = require('del');
-var concat = require('gulp-concat');
-var gulpMerge = require('gulp-merge');
 
 gulp.task('default', ['compile:src'], function () {
 });
@@ -18,22 +16,16 @@ gulp.task('watch', function () {
 });
 
 gulp.task('compile:src', function () {
-    return gulpMerge(
-        gulp.src(['externals/jquery-1.11.3.min.js']),
-        gulp.src(['src/**/*.ts'])
-            .pipe(typescript({out: 'm3.js'})))
-        .pipe(concat('m3.js'))
+    return gulp.src(['src/**/*.ts'])
+        .pipe(typescript({out: 'm3.js', target:'ES5'}))
         .pipe(gulp.dest('bin/debug'))
         .pipe(stripDebug())
         .pipe(gulp.dest('bin/release/'))
 });
 
 gulp.task('compile:tests', ['compile:src'], function () {
-    return gulpMerge(
-        gulp.src(['externals/jquery-1.11.3.min.js']),
-        gulp.src(['tests/**/*.ts'])
-        .pipe(typescript({out: 'tests.js'})))
-        .pipe(concat('tests.js'))
+    return gulp.src(['tests/**/*.ts'])
+            .pipe(typescript({out: 'tests.js', target:'ES5'}))
         .pipe(gulp.dest('bin/'))
 });
 

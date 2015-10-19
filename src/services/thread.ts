@@ -2,7 +2,6 @@
  * Adapted from https://github.com/vkiryukhin/vkthread
  */
 
-/// <reference path="../../typedefs/jquery.d.ts"/>
 module m3.services {
     export module Thread {
         var script = "(function() { \
@@ -43,7 +42,7 @@ module m3.services {
             }
         };
 
-        export function run(fn, args) {
+        export function run(fn, args, cb) {
             var URL = (<any>window).URL || (<any>window).webkitURL;
             var Blob = (<any>window).Blob;
             var Worker: any = (<any>window).Worker;
@@ -54,23 +53,20 @@ module m3.services {
 
             var blob = new (<any>window).Blob([script]);
 
-            var dfr = $.Deferred();
             var worker = new Worker(URL.createObjectURL(blob));
             var obj = {fn: fn, args: args, cntx: false, imprt: false};
 
             worker.onmessage = function (oEvent) {
-                dfr.resolve(oEvent.data);
+                cb(oEvent.data);
                 worker.terminate();
             };
 
             worker.onerror = function (error) {
-                dfr.reject(new Error(error.message));
+                cb(new Error(error.message));
                 worker.terminate();
             };
 
             worker.postMessage(JSONfn.stringify(obj));
-
-            return dfr;
         };
 
     }
