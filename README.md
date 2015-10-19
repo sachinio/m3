@@ -6,4 +6,4 @@
 
 ```gulp```
 
-***This is still under development, and isn't very useful yet.***
+***This is still work in progress, and isn't very useful yet.***
