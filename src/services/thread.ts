@@ -42,7 +42,7 @@ module m3.services {
             }
         };
 
-        export function run(fn, args, cb) {
+        export function execute(fn, args, cb) {
             var URL = (<any>window).URL || (<any>window).webkitURL;
             var Blob = (<any>window).Blob;
             var Worker: any = (<any>window).Worker;
