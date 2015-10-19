@@ -1,6 +1,6 @@
 /// <reference path="../types/basic.ts"/>
 
-module m3.algorithms {
+module m3.services {
     export module TextMeasurement {
         var element;
 

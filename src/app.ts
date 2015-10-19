@@ -1,7 +1,7 @@
-/// <reference path="algorithms/textMeasurement.ts"/>
+/// <reference path="services/textMeasurement.ts"/>
 /// <reference path="geometry/spatialHash.ts"/>
 
-var textSize = m3.algorithms.TextMeasurement.measureWidth({
+var textSize = m3.services.TextMeasurement.measureWidth({
     text: 'Hey',
     fontFamily: 'san-serif',
     fontSize: '12px'
