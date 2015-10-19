@@ -1,5 +1,9 @@
-# m3
+# m3 - Time to loosen those breaks on your visuals.
 
-###Loosen the breaks on your visuals
+####Setup
 
-**This is still under development, and i will have more instructions when it is in a more useable state**
+```npm install```
+
+```gulp```
+
+***This is still under development, and isn't very useful yet.***

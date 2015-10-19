@@ -19,7 +19,7 @@ gulp.task('compile:src', function () {
         .pipe(gulp.dest('bin/release/'));
 });
 
-gulp.task('compile:tests', ['compile:src'],function () {
+gulp.task('compile:tests', ['compile:src'], function () {
     return gulp.src(['tests/**/*.ts'])
         .pipe(typescript({out: 'tests.js'}))
         .pipe(gulp.dest('bin/'))

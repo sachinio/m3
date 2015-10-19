@@ -2,7 +2,7 @@
 /// <reference path="../../typedefs/jasmine.d.ts"/>
 
 module m3tests {
-    describe('Worker',() => {
+    describe('Thread',() => {
         it('exec function',(done)=> {
             function loopy(num) {
                 var total = 0;
