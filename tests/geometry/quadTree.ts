@@ -10,7 +10,7 @@ module m3tests {
             b.y <= (a.y + a.height))
         }
 
-        it('check collision',()=> {
+        function createTree(){
             var tree = new m3.geometry.QuadTree({x:0,y:0,width:200,height:200});
 
             tree.insert({x:0,y:0,width:10,height:10});
@@ -20,6 +20,11 @@ module m3tests {
             tree.insert({x:100,y:80,width:10,height:10});
             tree.insert({x:150,y:40,width:10,height:10});
 
+            return tree;
+        }
+
+        it('check collision with each other',()=> {
+            var tree = createTree();
 
             var objects = [];
             var counter = 0;
@@ -37,6 +42,22 @@ module m3tests {
             }
 
             expect(counter).toBe(2);
+        });
+
+        it('check collision with point',()=> {
+            var tree = createTree();
+            var counter = 0;
+
+            var obj = [];
+            var point = {x:1,y:1,width:0,height:0};
+            tree.find(obj, point);
+            for (var y = 0, length = obj.length; y < length; y++) {
+                if(intersect(obj[y], point)){
+                    counter++;
+                }
+            }
+
+            expect(counter).toBe(1);
         });
     });
 }
