@@ -33,7 +33,7 @@ gulp.task('compile:tests', ['compile:src'], function () {
 gulp.task('test', ['compile:tests'], function () {
     return gulp
         .src('bin/tests.js')
-        .pipe(jasmine({integration: true,reporter: reporters('gulp-jasmine')}))
+        .pipe(jasmine({integration: true,abortOnFail:true}))
 });
 
 gulp.task('clean', function () {
