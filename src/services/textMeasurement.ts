@@ -1,4 +1,4 @@
-/// <reference path="../types/basic.ts"/>
+/// <reference path="../types/base.ts"/>
 
 module m3.services {
     export module TextMeasurement {
