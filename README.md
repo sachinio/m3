@@ -6,3 +6,5 @@ npm install
 gulp
 ```
 ***This is still work in progress, and isn't very useful yet.***
+
+![Build Status](https://travis-ci.org/sachinio/m3.svg?branch=master)
