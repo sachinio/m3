@@ -14,7 +14,7 @@ module m3tests {
             }
 
             m3.services.Thread.execute(loopy, [{value:10}],(data) => {
-                expect(data).toBe(10);
+                expect(data).toBe(9);
                 done();
             });
         });
