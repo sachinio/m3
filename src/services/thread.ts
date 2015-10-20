@@ -51,7 +51,18 @@ module m3.services {
                 return null;
             }
 
-            var blob = new (<any>window).Blob([script]);
+            var builder = (<any>window).BlobBuilder
+                || (<any>window).WebKitBlobBuilder
+                || (<any>window).MozBlobBuilder
+                || (<any>window).MSBlobBuilder;
+
+            var blob;
+            if(builder) {
+                builder.append([script]);
+                blob = builder.getBlob();
+            }else {
+                blob = new (<any>window).Blob([script]);
+            }
 
             var worker = new Worker(URL.createObjectURL(blob));
             var obj = {fn: fn, args: args, cntx: false, imprt: false};
