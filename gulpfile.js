@@ -3,7 +3,6 @@ var typescript = require('gulp-tsc');
 var jasmine = require('gulp-jasmine-phantom');
 var stripDebug = require('gulp-strip-debug');
 var del = require('del');
-var reporters = require('reporters');
 
 gulp.task('default', ['compile:src'], function () {
 });
