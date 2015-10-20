@@ -3,6 +3,7 @@ var typescript = require('gulp-tsc');
 var jasmine = require('gulp-jasmine-phantom');
 var stripDebug = require('gulp-strip-debug');
 var del = require('del');
+var reporters = require('reporters');
 
 gulp.task('default', ['compile:src'], function () {
 });
@@ -32,7 +33,7 @@ gulp.task('compile:tests', ['compile:src'], function () {
 gulp.task('test', ['compile:tests'], function () {
     return gulp
         .src('bin/tests.js')
-        .pipe(jasmine({integration: true}))
+        .pipe(jasmine({integration: true,reporter: reporters('gulp-jasmine')}))
         .reporter('fail');
 });
 
