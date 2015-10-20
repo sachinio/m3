@@ -58,8 +58,9 @@ module m3.services {
 
             var blob;
             if(builder) {
-                builder.append([script]);
-                blob = builder.getBlob();
+                var builderInstance = new builder();
+                builderInstance .append([script]);
+                blob = builderInstance .getBlob();
             }else {
                 blob = new (<any>window).Blob([script]);
             }
