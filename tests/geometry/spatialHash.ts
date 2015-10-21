@@ -1,7 +1,7 @@
 /// <reference path="../../src/geometry/spatialHash.ts"/>
 /// <reference path="../../typedefs/jasmine.d.ts"/>
 
-module m3tests {
+module m3tests.geometry {
     describe('Spatial Hash', () => {
         it('Find exact point',()=>{
             var hash = new m3.geometry.SpatialHash(10);

@@ -4,6 +4,16 @@ module m3.ui.graphics {
         stroke: string;
     }
 
+    export interface Point{
+        x: number,
+        y: number
+    }
+
+    export interface Line{
+        points: Point[];
+        style: Style;
+    }
+
     export interface Circle {
         x: number;
         y: number;
@@ -31,10 +41,21 @@ module m3.ui.graphics {
         style: Style;
     }
 
+    export interface RegularPolygon{
+        x: number;
+        y: number;
+        sides: number;
+        radius: number;
+        startAngle: number;
+        style: Style;
+    }
+
     export interface ISurface {
         drawCircle(props:Circle);
         drawRect(props:Rect);
         drawRoundRect(props:RoundRect);
+        drawLine(props: Line);
+        drawRegularPolygon(props: RegularPolygon);
         update();
         wipe();
     }

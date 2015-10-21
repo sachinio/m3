@@ -1,7 +1,7 @@
 /// <reference path="../../src/services/textMeasurement.ts"/>
 /// <reference path="../../typedefs/jasmine.d.ts"/>
 
-module m3tests {
+module m3tests.services {
     describe('Text Measurement', () => {
         it('Measure with null properties', () =>{
             var width = m3.services.TextMeasurement.measureWidth(null);

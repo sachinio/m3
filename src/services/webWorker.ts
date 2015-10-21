@@ -3,7 +3,7 @@
  */
 
 module m3.services {
-    export module Thread {
+    export module Background {
         var script = "(function() { \
             var JSONfn = { \
                 parse:function (str, date2obj) { \

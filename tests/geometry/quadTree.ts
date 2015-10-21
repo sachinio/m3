@@ -1,7 +1,7 @@
 /// <reference path="../../src/geometry/quadTree.ts"/>
 /// <reference path="../../typedefs/jasmine.d.ts"/>
 
-module m3tests {
+module m3tests.geometry {
     describe('Quad Tree', () => {
         function intersect(a: m3.types.IBoundingBox, b: m3.types.IBoundingBox) {
             return (a.x <= (b.x + b.width) &&
