@@ -12,27 +12,28 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('watch', function () {
-    return gulp.watch('src/**/*.ts', ['compile:src'])
+    return gulp.watch('src/**/*.ts', ['compile:src']);
 });
 
 gulp.task('compile:src', function () {
     return gulp.src(['src/**/*.ts'])
-        .pipe(typescript({out: 'm3.js', target:'ES5'}))
+        .pipe(typescript({out: 'm3.js', target: 'ES5'}))
         .pipe(gulp.dest('bin/debug'))
         .pipe(stripDebug())
-        .pipe(gulp.dest('bin/release/'))
+        .pipe(gulp.dest('bin/release/'));
 });
 
 gulp.task('compile:tests', ['compile:src'], function () {
     return gulp.src(['tests/**/*.ts'])
-            .pipe(typescript({out: 'tests.js', target:'ES5'}))
-        .pipe(gulp.dest('bin/'))
+        .pipe(typescript({out: 'tests.js', target: 'ES5'}))
+        .pipe(stripDebug())
+        .pipe(gulp.dest('bin/'));
 });
 
 gulp.task('test', ['compile:tests'], function () {
     return gulp
         .src('bin/tests.js')
-        .pipe(jasmine({integration: true,abortOnFail:true}))
+        .pipe(jasmine({integration: true, abortOnFail: true}));
 });
 
 gulp.task('clean', function () {
