@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>M3 - Super charge visuals</title>
+    <style>
+        canvas {
+            margin: 10px;
+        }
+    </style>
 </head>
 <body>
 <button onclick="d()">Click</button>
@@ -12,56 +17,72 @@
     var canvas = document.getElementById('canvas');
     canvas.width = 600;
     canvas.height = 600;
-    var context = canvas.getContext('2d');
 
     var array = [];
     for (var i = 0; i < 10; i++) {
         array.push(Math.random());
     }
+    var surface = m3.ui.graphics.create(canvas, false);
+
 
     function d() {
-        function draw() {
-            var surface = m3.ui.graphics.create(context, false);
-            surface.wipe();
-            context.clearRect(0, 0, canvas.width, canvas.height);
+        var start = new Date().getTime();
+        var colors = ['red', 'green', 'blue', 'yellow'];
+        var points = [];
+        var points2 = [];
+        var eventLambda = function (d) {
+            d.style.fill = d.style.fill === 'red' ? 'green' : 'red';
+        };
+        var sep = 10;
+        surface.clear();
+        for (var i = 0; i < 100; i += 1) {
 
-            var start = new Date().getTime();
-            var colors = ['red', 'green', 'blue', 'yellow'];
-            var points = [];
-            var points2 = [];
+            points.push({x: i, y: (i * i) / 100});
+            points2.push({x: i, y: (i * i) / 500});
+            surface.drawRegularPolygon({
+                x: i * sep,
+                y: i * sep,
+                radius: 70,
+                sides: 8,
+                startAngle: 0,
+                style: {fill: '', stroke: colors[i % 4]}
+            });
+            surface.drawCircle({
+                x: i * sep,
+                y: i * sep,
+                r: 40,
+                style: {stroke: colors[i % 4], fill: 'green'},
+                events: {click: eventLambda}
+            });
+            surface.drawRect({
+                x: i * sep,
+                y: i * sep,
+                width: 80,
+                height: 80,
+                style: {stroke: colors[i % 4], fill: ''},
+                events: {click: eventLambda}
+            });
+            surface.drawRoundRect({
+                x: i * sep,
+                y: i * sep,
+                height: 100,
+                width: 100,
+                radiusTL: 10,
+                radiusTR: 10,
+                radiusBR: 10,
+                radiusBL: 10,
+                style: {fill: '', stroke: colors[i % 4]}
+            });
 
-            for (var i = 0; i < 10000; i += 1) {
-
-                points.push({x: i, y: (i * i)/100});
-                points2.push({x: i, y: (i*i)/500});
-                surface.drawRegularPolygon({x:i,y:i,radius:40,sides:8, startAngle:0,style:{fill:colors[i%4],stroke:colors[i%4]}});
-                surface.drawCircle({x: i, y: i, r: 40, style: {stroke: colors[i % 4], fill: ''}});
-                surface.drawRect({x: i, y: i, width: 50, height:50, style: {stroke: colors[i%4],fill:''}});
-                surface.drawRoundRect({x:i,y:i,height:100, width:100,radiusTL:10,radiusTR:10,radiusBR:10,radiusBL:10,style:{fill:'',stroke: colors[i% 4]}});
-            }
             surface.drawLine({points: points, style: {fill: '', stroke: 'black'}});
             surface.drawLine({points: points2, style: {fill: '', stroke: 'purple'}});
-            surface.update();
-            var end = new Date().getTime();
-            console.log(end - start);
+
         }
-
-        window.requestAnimationFrame(function () {
-            draw();
-        });
-    }
-    function background() {
-        var start = new Date().getTime();
-        m3.services.Background.execute(backSort, [array], function (data) {
-            var end = new Date().getTime();
-            console.log(end - start);
-            //console.log(data);
-        });
+        surface.update();
+        var end = new Date().getTime();
+        console.log(end - start);
     }
 
-    function backSort(arr) {
-        return arr.sort();
-    }
 </script>
 </body>
 </html>

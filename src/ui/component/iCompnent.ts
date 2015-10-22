@@ -8,5 +8,5 @@ module m3.ui.component {
 
     export interface IComponent{
         update(data, boundingBox: m3.types.IBoundingBox);
-    }2
+    }
 }

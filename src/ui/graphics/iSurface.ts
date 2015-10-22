@@ -1,4 +1,11 @@
 module m3.ui.graphics {
+    export interface Events{
+        click? : (d: Shape) => void;
+    }
+    export interface Shape{
+        events?: Events;
+        style: Style;
+    }
     export interface Style {
         fill: string;
         stroke: string;
@@ -9,27 +16,24 @@ module m3.ui.graphics {
         y: number
     }
 
-    export interface Line{
+    export interface Line extends Shape{
         points: Point[];
-        style: Style;
     }
 
-    export interface Circle {
+    export interface Circle extends Shape{
         x: number;
         y: number;
         r: number;
-        style: Style;
     }
 
-    export interface Rect {
+    export interface Rect extends Shape{
         x: number;
         y: number;
         width: number;
         height: number;
-        style: Style;
     }
 
-    export interface RoundRect {
+    export interface RoundRect extends Shape{
         x: number;
         y: number;
         width: number;
@@ -38,16 +42,14 @@ module m3.ui.graphics {
         radiusTR : number;
         radiusBL: number;
         radiusBR: number;
-        style: Style;
     }
 
-    export interface RegularPolygon{
+    export interface RegularPolygon extends Shape{
         x: number;
         y: number;
         sides: number;
         radius: number;
         startAngle: number;
-        style: Style;
     }
 
     export interface ISurface {
@@ -57,6 +59,6 @@ module m3.ui.graphics {
         drawLine(props: Line);
         drawRegularPolygon(props: RegularPolygon);
         update();
-        wipe();
+        clear();
     }
 }

@@ -4,7 +4,7 @@ module m3.geometry {
     import IBoundingBox = m3.types.IBoundingBox;
     export class QuadTree {
         private static MaxLevels:number = 5;
-        private static MaxObjects = 10;
+        private static MaxObjects = 1000;
         private bounds:IBoundingBox;
         private level:number;
         private nodes:QuadTree[];
