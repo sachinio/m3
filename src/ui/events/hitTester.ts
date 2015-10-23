@@ -1,6 +1,12 @@
 module m3.ui.events {
     import Circle = m3.ui.graphics.Circle;
     import Rect = m3.ui.graphics.Rect;
+    import Point = m3.ui.graphics.Point;
+
+    export module Types {
+        export var Click = 'onclick';
+        export var MouseDown = 'onmousedown';
+    }
 
     function normalizeMouseCoordinated(canvas, evt) {
         var rect = canvas.getBoundingClientRect();
@@ -10,7 +16,7 @@ module m3.ui.events {
         };
     }
 
-    function pointInsidePolygon(point, vs) {
+    function pointInsidePolygon(point:Point, vs) {
         var x = point.x, y = point.y;
 
         var inside = false;
@@ -27,24 +33,26 @@ module m3.ui.events {
         return inside;
     };
 
-    export function getHitForRectangle(point, rectangles:Rect[]) {
+    function getHitForRectangle(point:Point, rectangles:Rect[]) {
         var i = rectangles.length;
         while (i--) {
             var r = rectangles[i];
             if (r.events) {
+                let x2 = r.x + r.width;
+                let y2 = r.y + r.height;
                 if (pointInsidePolygon(
                         point,
                         [[r.x, r.y],
-                        [r.x + r.width, r.y],
-                        [r.x + r.width, r.y + r.height],
-                        [r.x, r.y + r.height]])) {
+                            [x2, r.y],
+                            [x2, y2],
+                            [r.x, y2]])) {
                     return r;
                 }
             }
         }
     }
 
-    export function getHitForCircles(point:{x: number,y:number}, circles:Circle[]):Circle {
+    function getHitForCircles(point:Point, circles:Circle[]):Circle {
         var x = point.x;
         var y = point.y;
         var i = circles.length;
@@ -59,29 +67,43 @@ module m3.ui.events {
         return null;
     }
 
-    export class CanvasHitTester {
-        public subscribe(canvas:m3.ui.graphics.Canvas) {
-            var htmlCanvas = canvas.canvas;
-            htmlCanvas.onmousedown = (e)=> {
-                var p = normalizeMouseCoordinated(htmlCanvas, e);
-                var circle = getHitForCircles(p, canvas.circles);
-                if (circle) {
-                    var click = circle.events.click;
-                    if (click) {
-                        click(circle);
-                        canvas.update();
-                    }
-                }
+    function testSelection(eventName:string, canvas:m3.ui.graphics.Canvas, p:Point) {
+        var circle = getHitForCircles(p, canvas.circles);
+        if (circle) {
+            var eventLambda = circle.events[eventName];
+            if (eventLambda) {
+                eventLambda(circle, canvas.circles);
+                canvas.update();
+            }
+        }
 
-                var rect = getHitForRectangle(p, canvas.rectangles);
-                if (rect) {
-                    var click = rect.events.click;
-                    if (click) {
-                        click(rect);
-                        canvas.update();
-                    }
+        var rect = getHitForRectangle(p, canvas.rectangles);
+        if (rect) {
+            var eventLambda = rect.events[eventName];
+            if (eventLambda) {
+                eventLambda(rect, canvas.rectangles);
+                canvas.update();
+            }
+        }
+    }
+
+    function isSelection(eventName:string):boolean {
+        return eventName === Types.Click || eventName === Types.MouseDown;
+    }
+
+    export class CanvasHitTester {
+        public subscribe(eventName:string, canvas:m3.ui.graphics.Canvas):void {
+            var htmlCanvas = canvas.canvas;
+            htmlCanvas[eventName] = (e)=> {
+                if (isSelection(eventName)) {
+                    var p = normalizeMouseCoordinated(htmlCanvas, e);
+                    testSelection(eventName, canvas, p);
                 }
             };
+        }
+
+        public unSubscribe(eventName:string, canvas:m3.ui.graphics.Canvas):void {
+            canvas.canvas[eventName] = undefined;
         }
     }
 }

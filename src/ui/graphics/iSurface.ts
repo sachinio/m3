@@ -1,7 +1,8 @@
 module m3.ui.graphics {
     export interface Events{
-        click? : (d: Shape) => void;
+        [id: string]:(d: Shape, datum: Shape[]) => void;
     }
+
     export interface Shape{
         events?: Events;
         style: Style;
@@ -58,6 +59,13 @@ module m3.ui.graphics {
         drawRoundRect(props:RoundRect);
         drawLine(props: Line);
         drawRegularPolygon(props: RegularPolygon);
+
+        // Eventing
+        listenTo(eventName: string);
+        stopListeningTo(eventName: string);
+
+        //lifecycle
+        begin();
         update();
         clear();
     }

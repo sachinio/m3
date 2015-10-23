@@ -4,18 +4,39 @@
     <meta charset="UTF-8">
     <title>M3 - Super charge visuals</title>
     <style>
-        canvas {
-            margin: 10px;
-        }
+
     </style>
 </head>
 <body>
-<button onclick="d()">Click</button>
-<canvas id="canvas" width=600 height=300></canvas>
+<div>
+<button onclick="test()">Click</button>
+<input id="range" type="range" min="10" max="600" value="600" oninput="test()">
+</div>
+<canvas id="canvas" width=1200 height=600></canvas>
+<svg></svg>
+<script src="externals/d3.min.js"></script>
 <script src="bin/debug/m3.js"></script>
 <script>
+var nodeCount = 5000;
+    function drawd3(){
+        var dim = document.getElementById('range').value;
+        var svg = d3.select('svg');
+        //svg.selectAll('*').remove();
+        svg.attr('height',600).attr('width',1200);
+        var selection = svg.selectAll('circle'
+        ).data(d3.range(nodeCount).map(function(){return{x:Math.random()*1200,y:Math.random()*dim}}));
+
+        selection.enter().append('circle');
+        selection
+                .attr('cx',function(d){return d.x})
+                .attr('cy',function(d){return d.y})
+                .attr('r',10)
+        .style('fill','red');
+        selection.exit().remove();
+
+    }
     var canvas = document.getElementById('canvas');
-    canvas.width = 600;
+    canvas.width = 1200;
     canvas.height = 600;
 
     var array = [];
@@ -23,9 +44,24 @@
         array.push(Math.random());
     }
     var surface = m3.ui.graphics.create(canvas, false);
+    var barChart = new m3.ui.component.Bars(surface);
+    var num = 195//document.getElementById('range').value;
+    var v = d3.range(num).map(function(d,i){return d3.random.bates(i)()});
 
-
-    function d() {
+    //drawABarChart();
+    function drawABarChart(){
+        var dim = document.getElementById('range').value;
+        console.log(v);
+        surface.clear();
+        barChart.update({
+            data: {values:v},
+            boundingBox: {x:0,y:0,width:canvas.width,height:dim},
+            canvas: surface
+        });
+        surface.update();
+    }
+    function test() {
+        var dim = document.getElementById('range').value;
         var start = new Date().getTime();
         var colors = ['red', 'green', 'blue', 'yellow'];
         var points = [];
@@ -33,36 +69,36 @@
         var eventLambda = function (d) {
             d.style.fill = d.style.fill === 'red' ? 'green' : 'red';
         };
-        var sep = 10;
+        var sep = 1;
         surface.clear();
-        for (var i = 0; i < 100; i += 1) {
+        for (var i = 0; i < nodeCount; i += 1) {
 
-            points.push({x: i, y: (i * i) / 100});
-            points2.push({x: i, y: (i * i) / 500});
-            surface.drawRegularPolygon({
-                x: i * sep,
-                y: i * sep,
-                radius: 70,
-                sides: 8,
+            //points.push({x: i, y: (i * i) / 100});
+            //points2.push({x: i, y: (i * i) / 500});
+            /*surface.drawRegularPolygon({
+                x: Math.random() * 1000 | 0,
+                y: Math.random() * dim | 0,
+                radius: 20,
+                sides: 5,
                 startAngle: 0,
-                style: {fill: '', stroke: colors[i % 4]}
-            });
+                style: {fill: '', stroke: 'rgba(124,214,'+((Math.random()*255) | 0)+',0.5)'}
+            });*/
             surface.drawCircle({
-                x: i * sep,
-                y: i * sep,
-                r: 40,
-                style: {stroke: colors[i % 4], fill: 'green'},
+                x: Math.random() * 1200 | 0,
+                y: Math.random() * dim | 0,
+                r: 10,
+                style: {stroke: colors[i % 4], fill: 'pink'},
                 events: {click: eventLambda}
-            });
+            });/*
             surface.drawRect({
-                x: i * sep,
-                y: i * sep,
-                width: 80,
-                height: 80,
+                x: Math.random() * 1000 | 0,
+                y: Math.random() * dim | 0,
+                width: 30,
+                height: 30,
                 style: {stroke: colors[i % 4], fill: ''},
                 events: {click: eventLambda}
             });
-            surface.drawRoundRect({
+            /*surface.drawRoundRect({
                 x: i * sep,
                 y: i * sep,
                 height: 100,
@@ -72,12 +108,11 @@
                 radiusBR: 10,
                 radiusBL: 10,
                 style: {fill: '', stroke: colors[i % 4]}
-            });
-
-            surface.drawLine({points: points, style: {fill: '', stroke: 'black'}});
-            surface.drawLine({points: points2, style: {fill: '', stroke: 'purple'}});
+            });*/
 
         }
+        surface.drawLine({points: points, style: {fill: '', stroke: 'black'}});
+        surface.drawLine({points: points2, style: {fill: '', stroke: 'purple'}});
         surface.update();
         var end = new Date().getTime();
         console.log(end - start);

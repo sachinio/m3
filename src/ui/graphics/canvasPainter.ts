@@ -20,7 +20,7 @@ module m3.ui.graphics{
                 do {
                     i--;
                     r = rectangles[i];
-                    context.rect(r.x, r.y, r.width, r.width);
+                    context.rect(r.x, r.y, r.width, r.height);
                     if (i) var nextRectStyle = rectangles[i - 1].style;
                 } while (i
                 && (style.stroke.localeCompare(nextRectStyle.stroke)) === 0
@@ -114,7 +114,8 @@ module m3.ui.graphics{
                     let startAngle = (Math.PI / sides * (sides % 2 ? .5 : 1)) + polygon.startAngle;
                     if (sides < 3) return;
                     var a = (Math.PI * 2) / sides;
-                    context.moveTo(0, 0);
+                    //context.moveTo(0, 0);
+                    context.beginPath();
                     context.translate(polygon.x, polygon.y);
                     context.rotate(startAngle);
                     context.moveTo(radius, 0);

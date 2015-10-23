@@ -6,7 +6,12 @@ module m3.ui.component {
         update(data, boundingBox: m3.types.IBoundingBox);
     }
 
+    export interface ComponentUpdateOptions<T>{
+        data: T;
+        boundingBox: m3.types.IBoundingBox;
+    }
+
     export interface IComponent{
-        update(data, boundingBox: m3.types.IBoundingBox);
+        update(options: ComponentUpdateOptions<any>);
     }
 }

@@ -10,6 +10,7 @@ module m3.ui.graphics {
         private context;
         public canvas;
         private optimize:boolean;
+        private hitTester;
 
         public circles:Circle[];
         public rectangles:Rect[];
@@ -26,7 +27,15 @@ module m3.ui.graphics {
             this.regularPolygons = [];
             this.lines = [];
             this.optimize = optimize;
-            new m3.ui.events.CanvasHitTester().subscribe(this);
+            this.hitTester = new m3.ui.events.CanvasHitTester();
+        }
+
+        public listenTo(name: string){
+            this.hitTester.subscribe(name, this);
+        }
+
+        public stopListeningTo(eventName: string){
+            this.hitTester.unSubscribe(eventName, this);
         }
 
         public drawCircle(props:Circle) {
@@ -47,6 +56,10 @@ module m3.ui.graphics {
 
         public drawRegularPolygon(props:RegularPolygon) {
             this.regularPolygons.push(props);
+        }
+
+        public begin(){
+            this.clear();
         }
 
         public clear() {
