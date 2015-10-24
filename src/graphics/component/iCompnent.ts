@@ -1,6 +1,6 @@
 /// <reference path="../../types/base.ts"/>
 
-module m3.ui.component {
+module m3.graphics.component {
 
     export interface ILayout {
         update(data, boundingBox: m3.types.IBoundingBox);

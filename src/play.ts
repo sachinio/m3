@@ -1,1 +1,1 @@
-/// <reference path="ui/graphics/iSurface.ts"/>
+/// <reference path="graphics/surface/iSurface.ts"/>

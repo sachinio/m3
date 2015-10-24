@@ -1,8 +1,10 @@
 /// <reference path="../../../typedefs/jasmine.d.ts"/>
-/// <reference path="../../../src/ui/graphics/iSurface.ts"/>
-/// <reference path="../../../src/ui/graphics/canvas.ts"/>
+/// <reference path="../../../src/graphics/surface/iSurface.ts"/>
+/// <reference path="../../../src/graphics/surface/canvas.ts"/>
+/// <reference path="../../../src/_reference.ts"/>
 
 module m3tests.ui.graphics {
+
     describe('Canvas', () => {
         function createCanvasContext(){
             var canvas = document.createElement('canvas');
@@ -11,7 +13,7 @@ module m3tests.ui.graphics {
             return canvas;//.getContext('2d');
         }
 
-        function drawSomeShapesAndUpdate(surface: m3.ui.graphics.ISurface, force = false){
+        function drawSomeShapesAndUpdate(surface: m3.graphics.surface.ISurface, force = false){
             surface.begin();
             surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'red',fill:'green'}});
             surface.drawCircle({x:0,y:0,r:10,style:{stroke:'green',fill:'green'}});
@@ -24,7 +26,7 @@ module m3tests.ui.graphics {
         }
 
         it('draw circle', () => {
-            var surface = m3.ui.graphics.create(createCanvasContext(), true);
+            var surface = m3.graphics.surface.create(createCanvasContext(), true);
             surface.begin();
             surface.drawCircle({x:0,y:0,r:10,style:{stroke:'red',fill:'green'}});
             var strokeSpy = spyOn((<any>surface).context, 'stroke');
@@ -35,7 +37,7 @@ module m3tests.ui.graphics {
         });
 
         it('draw rectangle', () => {
-            var surface = m3.ui.graphics.create(createCanvasContext(),true);
+            var surface = m3.graphics.surface.create(createCanvasContext(),true);
             surface.begin();
             surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'red',fill:'green'}});
             var strokeSpy = spyOn((<any>surface).context, 'stroke');
@@ -46,7 +48,7 @@ module m3tests.ui.graphics {
         });
 
         it('draw round rectangle', () => {
-            var surface = m3.ui.graphics.create(createCanvasContext(),true);
+            var surface = m3.graphics.surface.create(createCanvasContext(),true);
             surface.begin();
             surface.drawRoundRect({x:0,y:0,height:100,width:100,
                 radiusTL:10,radiusTR:10,radiusBL:10,radiusBR: 10,
@@ -59,7 +61,7 @@ module m3tests.ui.graphics {
         });
 
         it('draw line', () => {
-            var surface = m3.ui.graphics.create(createCanvasContext(),true);
+            var surface = m3.graphics.surface.create(createCanvasContext(),true);
             surface.begin();
             surface.drawLine({points: [{x:0,y:0},{x:2,y:2}],style:{fill:'',stroke:'black'}});
             var strokeSpy = spyOn((<any>surface).context, 'stroke');
@@ -68,7 +70,7 @@ module m3tests.ui.graphics {
         });
 
         it('draw regular polygon', () => {
-            var surface = m3.ui.graphics.create(createCanvasContext(),true);
+            var surface = m3.graphics.surface.create(createCanvasContext(),true);
             surface.begin();
             surface.drawRegularPolygon({x:10,y:10,radius:10,sides:6, startAngle:0,style:{fill:'red',stroke:'green'}});
             var strokeSpy = spyOn((<any>surface).context, 'stroke');
@@ -79,7 +81,7 @@ module m3tests.ui.graphics {
         });
 
         it('no optimize round rectangle', () => {
-            var surface = m3.ui.graphics.create(createCanvasContext(),false);
+            var surface = m3.graphics.surface.create(createCanvasContext(),false);
             surface.begin();
             surface.drawRoundRect({x:0,y:0,height:100,width:100,
                 radiusTL:10,radiusTR:10,radiusBL:10,radiusBR: 10,
@@ -103,7 +105,7 @@ module m3tests.ui.graphics {
         });
 
         it('no optimize rectangle', () => {
-            var surface = m3.ui.graphics.create(createCanvasContext(),false);
+            var surface = m3.graphics.surface.create(createCanvasContext(),false);
             surface.begin();
             surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'red',fill:'green'}});
             surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'green',fill:'green'}});
@@ -119,7 +121,7 @@ module m3tests.ui.graphics {
         });
 
         it('no optimize circle', () => {
-            var surface = m3.ui.graphics.create(createCanvasContext(),false);
+            var surface = m3.graphics.surface.create(createCanvasContext(),false);
             surface.begin();
             surface.drawCircle({x:0,y:0,r:10,style:{stroke:'red',fill:'green'}});
             surface.drawCircle({x:0,y:0,r:10,style:{stroke:'green',fill:'green'}});
@@ -135,7 +137,7 @@ module m3tests.ui.graphics {
         });
 
         it('no optimize polygon', () => {
-            var surface = m3.ui.graphics.create(createCanvasContext(), false);
+            var surface = m3.graphics.surface.create(createCanvasContext(), false);
             surface.begin();
             surface.drawRegularPolygon({x:10,y:10,radius:10,sides:6, startAngle:0,style:{fill:'red',stroke:'green'}});
             surface.drawRegularPolygon({x:10,y:10,radius:10,sides:6, startAngle:0,style:{fill:'red',stroke:'red'}});
@@ -151,7 +153,7 @@ module m3tests.ui.graphics {
         });
 
         it('optimize polygon', () => {
-            var surface = m3.ui.graphics.create(createCanvasContext(),true);
+            var surface = m3.graphics.surface.create(createCanvasContext(),true);
             surface.begin();
             surface.drawRegularPolygon({x:10,y:10,radius:10,sides:6, startAngle:0,style:{fill:'red',stroke:'green'}});
             surface.drawRegularPolygon({x:10,y:10,radius:10,sides:6, startAngle:0,style:{fill:'red',stroke:'red'}});
@@ -167,7 +169,7 @@ module m3tests.ui.graphics {
         });
 
         it('optimize rectangle', () => {
-            var surface = m3.ui.graphics.create(createCanvasContext(), true);
+            var surface = m3.graphics.surface.create(createCanvasContext(), true);
             surface.begin();
             surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'red',fill:'green'}});
             surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'green',fill:'green'}});
@@ -183,7 +185,7 @@ module m3tests.ui.graphics {
         });
 
         it('optimize round rectangle', () => {
-            var surface = m3.ui.graphics.create(createCanvasContext(), true);
+            var surface = m3.graphics.surface.create(createCanvasContext(), true);
             surface.begin();
             surface.drawRoundRect({x:0,y:0,height:100,width:100,
                 radiusTL:10,radiusTR:10,radiusBL:10,radiusBR: 10,
@@ -207,7 +209,7 @@ module m3tests.ui.graphics {
         });
 
         it('no re-draw if scene unchanged',()=>{
-            var surface = m3.ui.graphics.create(createCanvasContext(),true);
+            var surface = m3.graphics.surface.create(createCanvasContext(),true);
 
             drawSomeShapesAndUpdate(surface);
             var spy = spyOn(surface,'clearContext');
@@ -216,7 +218,7 @@ module m3tests.ui.graphics {
         });
 
         it('re-draw if scene unchanged, but force update on',()=>{
-            var surface = m3.ui.graphics.create(createCanvasContext(),true);
+            var surface = m3.graphics.surface.create(createCanvasContext(),true);
             drawSomeShapesAndUpdate(surface);
             var spy = spyOn(surface,'clearContext');
             drawSomeShapesAndUpdate(surface,true);
@@ -224,14 +226,13 @@ module m3tests.ui.graphics {
         });
 
         it('no begin precceding an update should throw',()=>{
-            var surface = m3.ui.graphics.create(createCanvasContext(),true);
+            var surface = m3.graphics.surface.create(createCanvasContext(),true);
             surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'red',fill:'green'}});
-            expect(()=>surface.update()).toThrow(new Error("previous pointer should never " +
-                "be the same as current, forgot a begin()?"));
+            expect(()=>surface.update()).toThrow(new Error(m3.strings.CanvasPointerMismatchErrorMessage));
         });
 
         it('wipe', () => {
-            var surface = m3.ui.graphics.create(createCanvasContext(),true);
+            var surface = m3.graphics.surface.create(createCanvasContext(),true);
             surface.begin();
             surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'red',fill:'green'}});
             surface.drawCircle({x:0,y:0,r:10,style:{stroke:'green',fill:'green'}});

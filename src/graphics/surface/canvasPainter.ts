@@ -1,4 +1,4 @@
-module m3.ui.graphics{
+module m3.graphics.surface{
     export module CanvasPainter {
         var TwoPi = 2 * Math.PI;
         var Transparent = 'rgba(0,0,0,0)';

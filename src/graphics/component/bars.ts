@@ -1,15 +1,17 @@
 /// <reference path="../../_reference.ts"/>
 
-module m3.ui.component {
+module m3.graphics.component {
+    import Rect = m3.graphics.surface.Rect;
+
     export interface BarsData {
         values: number[];
     }
     export class Bars implements IComponent {
-        private surface:m3.ui.graphics.ISurface;
+        private surface:m3.graphics.surface.ISurface;
 
         constructor(surface) {
             this.surface = surface;
-            surface.listenTo(m3.ui.events.types.mouseDown);
+            surface.listenTo(m3.graphics.events.types.mouseDown);
         }
 
         public update(options:ComponentUpdateOptions<BarsData>) {
@@ -30,7 +32,7 @@ module m3.ui.component {
             }));
 
             for (let i = 0, len = values.length; i < len; i++) {
-                var rect:m3.ui.graphics.Rect = {
+                var rect:m3.graphics.surface.Rect = {
                     x: xScale(i.toString()),
                     y: yScale(values[i]),
                     width: xScale.rangeBand(),
@@ -39,7 +41,7 @@ module m3.ui.component {
                     events: {}
                 };
 
-                rect.events[m3.ui.events.types.mouseDown] = (d:m3.ui.graphics.Rect, dm:m3.ui.graphics.Rect[])=> {
+                rect.events[m3.graphics.events.types.mouseDown] = (d:Rect, dm:Rect[])=> {
                     dm.forEach(dc=>{
                         if(dc!=d){
                             dc.style.fill = 'green'

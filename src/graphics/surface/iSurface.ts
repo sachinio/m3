@@ -1,6 +1,6 @@
-module m3.ui.graphics {
+module m3.graphics.surface {
     export interface Events{
-        [id: string]:(d: Shape, datum: Shape[]) => void;
+        [id: string]:<T>(d: T, datum: T[]) => void;
     }
 
     export interface Shape{

@@ -2,9 +2,9 @@
 /// <reference path="../events/hitTester.ts"/>
 /// <reference path="../../_reference.ts"/>
 
-module m3.ui.graphics {
-    export function create(context, optimize:boolean = false) {
-        return new Canvas(context, optimize);
+module m3.graphics.surface {
+    export function create(htmlCanvas, optimize:boolean = false) {
+        return new Canvas(htmlCanvas, optimize);
     }
 
     export interface CanvasViewModel {
@@ -16,27 +16,21 @@ module m3.ui.graphics {
     }
 
     export class Canvas implements ISurface {
-        public htmlCanvas;
-
         private context;
-        private boundingBox:m3.types.IBoundingBox;
-        private optimize:boolean;
-        private hitTester:m3.ui.events.CanvasHitTester;
+        private hitTester:m3.graphics.events.CanvasHitTester;
         private pointer:number;
         private previousPointer:number;
         private viewModel:[CanvasViewModel,CanvasViewModel];
 
-        constructor(htmlCanvas, optimize) {
-            this.htmlCanvas = htmlCanvas;
+        constructor(public htmlCanvas, private optimize) {
             this.context = htmlCanvas.getContext('2d');
-            this.optimize = optimize;
-            this.hitTester = new m3.ui.events.CanvasHitTester();
+            this.hitTester = new m3.graphics.events.CanvasHitTester();
             this.resetViewModel();
             this.previousPointer = this.pointer = 0;
 
             if(this.optimize){
                 console.warn('Warning: Optimize is turned on, this is an experimental feature ' +
-                    '& might result in rendering inconsistencies');
+                    '& might(probably will) result in rendering inconsistencies.');
             }
         }
 
@@ -79,8 +73,6 @@ module m3.ui.graphics {
                 regularPolygons: [],
                 lines: [],
             };
-
-            console.log(this.viewModel[this.pointer]);
         }
 
         public clear() {
@@ -104,13 +96,11 @@ module m3.ui.graphics {
             CanvasPainter.drawRegularPolygons(context, viewModel[this.pointer].regularPolygons, optimize);
         }
 
-        public getCurrentState() {
+        public getCurrentState(): CanvasViewModel {
             return this.viewModel[this.pointer];
         }
 
         private clearContext() {
-            var bb = this.boundingBox;
-            console.log(bb);
             this.context.clearRect(0,0,this.htmlCanvas.width, this.htmlCanvas.height);
         }
 
@@ -134,7 +124,7 @@ module m3.ui.graphics {
             var viewModel = this.viewModel;
 
             if (this.previousPointer === this.pointer) {
-                throw new Error('previous pointer should never be the same as current, forgot a begin()?');
+                throw new Error(m3.strings.CanvasPointerMismatchErrorMessage);
             }
 
             return _.isEqual(viewModel[0], viewModel[1]);

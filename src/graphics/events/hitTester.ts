@@ -1,8 +1,9 @@
 
-module m3.ui.events {
-    import Circle = m3.ui.graphics.Circle;
-    import Rect = m3.ui.graphics.Rect;
-    import Point = m3.ui.graphics.Point;
+module m3.graphics.events {
+    import Circle = m3.graphics.surface.Circle;
+    import Rect = m3.graphics.surface.Rect;
+    import Point = m3.graphics.surface.Point;
+    import Canvas = m3.graphics.surface.Canvas;
 
     export module types {
         export var click = 'onclick';
@@ -70,14 +71,14 @@ module m3.ui.events {
         return null;
     }
 
-    function testSelection(eventName:string, canvas:m3.ui.graphics.Canvas, p:Point) {
-        var circle = getHitForCircles(p, canvas.getCurrentState().circles);
+    function testSelection(eventName:string, canvas:Canvas, p:Point) {
+        var circles = canvas.getCurrentState().circles;
+        var circle = getHitForCircles(p, circles);
         if (circle) {
             var eventLambda = circle.events[eventName];
             if (eventLambda) {
-                console.log('click')
-                eventLambda(circle, canvas.getCurrentState().circles);
-                canvas.update();
+                eventLambda<Circle>(circle, canvas.getCurrentState().circles);
+                canvas.update(true);
             }
         }
 
@@ -85,8 +86,8 @@ module m3.ui.events {
         if (rect) {
             var eventLambda = rect.events[eventName];
             if (eventLambda) {
-                eventLambda(rect, canvas.getCurrentState().rectangles);
-                canvas.update();
+                eventLambda<Rect>(rect, canvas.getCurrentState().rectangles);
+                canvas.update(true);
             }
         }
     }
@@ -96,7 +97,7 @@ module m3.ui.events {
     }
 
     export class CanvasHitTester {
-        public subscribe(eventName:string, canvas:m3.ui.graphics.Canvas):void {
+        public subscribe(eventName:string, canvas:Canvas):void {
             var htmlCanvas = canvas.htmlCanvas;
             htmlCanvas[eventName] = (e)=> {
                 if (isSelection(eventName)) {
@@ -106,7 +107,7 @@ module m3.ui.events {
             };
         }
 
-        public unSubscribe(eventName:string, canvas:m3.ui.graphics.Canvas):void {
+        public unSubscribe(eventName:string, canvas:Canvas):void {
             canvas.htmlCanvas[eventName] = undefined;
         }
     }
