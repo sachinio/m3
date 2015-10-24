@@ -3,12 +3,10 @@ var typescript = require('gulp-tsc');
 var jasmine = require('gulp-jasmine-phantom');
 var stripDebug = require('gulp-strip-debug');
 var del = require('del');
+var addSrc = require('gulp-add-src');
+var concat = require('gulp-concat');
 
 gulp.task('default', ['compile:src'], function () {
-});
-
-gulp.task('scripts', function () {
-    return gulp;
 });
 
 gulp.task('watch', function () {
@@ -26,6 +24,8 @@ gulp.task('compile:src', function () {
 gulp.task('compile:tests', ['compile:src'], function () {
     return gulp.src(['tests/**/*.ts'])
         .pipe(typescript({out: 'tests.js', target: 'ES5'}))
+        .pipe(addSrc.prepend('externals/*.js'))
+        .pipe(concat('tests.js'))
         .pipe(stripDebug())
         .pipe(gulp.dest('bin/'));
 });

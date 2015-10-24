@@ -10,14 +10,15 @@
 <body>
 <div>
 <button onclick="test()">Click</button>
-<input id="range" type="range" min="10" max="600" value="600" oninput="test()">
+<input id="range" type="range" min="10" max="600" value="600" oninput="drawABarChart()">
 </div>
 <canvas id="canvas" width=1200 height=600></canvas>
 <svg></svg>
 <script src="externals/d3.min.js"></script>
+<script src="externals/lodash.min.js"></script>
 <script src="bin/debug/m3.js"></script>
 <script>
-var nodeCount = 5000;
+var nodeCount = 1000;
     function drawd3(){
         var dim = document.getElementById('range').value;
         var svg = d3.select('svg');
@@ -45,14 +46,15 @@ var nodeCount = 5000;
     }
     var surface = m3.ui.graphics.create(canvas, false);
     var barChart = new m3.ui.component.Bars(surface);
-    var num = 195//document.getElementById('range').value;
+    var num = 150//document.getElementById('range').value;
     var v = d3.range(num).map(function(d,i){return d3.random.bates(i)()});
 
+   // drawABarChart();
     //drawABarChart();
     function drawABarChart(){
         var dim = document.getElementById('range').value;
         console.log(v);
-        surface.clear();
+        surface.begin();
         barChart.update({
             data: {values:v},
             boundingBox: {x:0,y:0,width:canvas.width,height:dim},
@@ -60,17 +62,30 @@ var nodeCount = 5000;
         });
         surface.update();
     }
+
+var eventLambda = function (d) {
+    d.style.fill = d.style.fill === 'red' ? 'green' : 'red';
+};
+
+var circles = d3.range(nodeCount).map(function(){ return {
+    x: Math.random() * 1200 | 0,
+    y: Math.random() * 600 | 0,
+    r: 10,
+    style: {stroke: 'orange', fill: 'pink'},
+    events: {'onclick': eventLambda}
+}});
+
+surface.listenTo(m3.ui.events.types.click);
+//test();
+//test();
     function test() {
         var dim = document.getElementById('range').value;
         var start = new Date().getTime();
         var colors = ['red', 'green', 'blue', 'yellow'];
         var points = [];
         var points2 = [];
-        var eventLambda = function (d) {
-            d.style.fill = d.style.fill === 'red' ? 'green' : 'red';
-        };
         var sep = 1;
-        surface.clear();
+        surface.begin();
         for (var i = 0; i < nodeCount; i += 1) {
 
             //points.push({x: i, y: (i * i) / 100});
@@ -83,13 +98,8 @@ var nodeCount = 5000;
                 startAngle: 0,
                 style: {fill: '', stroke: 'rgba(124,214,'+((Math.random()*255) | 0)+',0.5)'}
             });*/
-            surface.drawCircle({
-                x: Math.random() * 1200 | 0,
-                y: Math.random() * dim | 0,
-                r: 10,
-                style: {stroke: colors[i % 4], fill: 'pink'},
-                events: {click: eventLambda}
-            });/*
+            circles[i].height = dim;
+            surface.drawCircle(circles[i]);/*
             surface.drawRect({
                 x: Math.random() * 1000 | 0,
                 y: Math.random() * dim | 0,
@@ -111,8 +121,8 @@ var nodeCount = 5000;
             });*/
 
         }
-        surface.drawLine({points: points, style: {fill: '', stroke: 'black'}});
-        surface.drawLine({points: points2, style: {fill: '', stroke: 'purple'}});
+        //surface.drawLine({points: points, style: {fill: '', stroke: 'black'}});
+        //surface.drawLine({points: points2, style: {fill: '', stroke: 'purple'}});
         surface.update();
         var end = new Date().getTime();
         console.log(end - start);

@@ -66,7 +66,7 @@ module m3.ui.graphics {
 
         //lifecycle
         begin();
-        update();
+        update(force: boolean);
         clear();
     }
 }

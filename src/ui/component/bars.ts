@@ -1,4 +1,4 @@
-///<reference path="../../../typedefs/d3.d.ts"/>
+/// <reference path="../../_reference.ts"/>
 
 module m3.ui.component {
     export interface BarsData {
@@ -9,7 +9,7 @@ module m3.ui.component {
 
         constructor(surface) {
             this.surface = surface;
-            surface.listenTo(m3.ui.events.Types.MouseDown);
+            surface.listenTo(m3.ui.events.types.mouseDown);
         }
 
         public update(options:ComponentUpdateOptions<BarsData>) {
@@ -39,7 +39,7 @@ module m3.ui.component {
                     events: {}
                 };
 
-                rect.events[m3.ui.events.Types.MouseDown] = (d:m3.ui.graphics.Rect, dm:m3.ui.graphics.Rect[])=> {
+                rect.events[m3.ui.events.types.mouseDown] = (d:m3.ui.graphics.Rect, dm:m3.ui.graphics.Rect[])=> {
                     dm.forEach(dc=>{
                         if(dc!=d){
                             dc.style.fill = 'green'

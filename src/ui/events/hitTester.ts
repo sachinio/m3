@@ -1,11 +1,12 @@
+
 module m3.ui.events {
     import Circle = m3.ui.graphics.Circle;
     import Rect = m3.ui.graphics.Rect;
     import Point = m3.ui.graphics.Point;
 
-    export module Types {
-        export var Click = 'onclick';
-        export var MouseDown = 'onmousedown';
+    export module types {
+        export var click = 'onclick';
+        export var mouseDown = 'onmousedown';
     }
 
     function normalizeMouseCoordinated(canvas, evt) {
@@ -55,45 +56,48 @@ module m3.ui.events {
     function getHitForCircles(point:Point, circles:Circle[]):Circle {
         var x = point.x;
         var y = point.y;
-        var i = circles.length;
-        while (i--) {
+        var i = 0;
+        var l = circles.length;
+        while (i<l) {
             var c = circles[i];
             if (c.events) {
                 if (Math.sqrt(Math.pow((c.x - x), 2) + Math.pow((c.y - y), 2)) <= c.r) {
                     return c;
                 }
             }
+            i++;
         }
         return null;
     }
 
     function testSelection(eventName:string, canvas:m3.ui.graphics.Canvas, p:Point) {
-        var circle = getHitForCircles(p, canvas.circles);
+        var circle = getHitForCircles(p, canvas.getCurrentState().circles);
         if (circle) {
             var eventLambda = circle.events[eventName];
             if (eventLambda) {
-                eventLambda(circle, canvas.circles);
+                console.log('click')
+                eventLambda(circle, canvas.getCurrentState().circles);
                 canvas.update();
             }
         }
 
-        var rect = getHitForRectangle(p, canvas.rectangles);
+        var rect = getHitForRectangle(p, canvas.getCurrentState().rectangles);
         if (rect) {
             var eventLambda = rect.events[eventName];
             if (eventLambda) {
-                eventLambda(rect, canvas.rectangles);
+                eventLambda(rect, canvas.getCurrentState().rectangles);
                 canvas.update();
             }
         }
     }
 
     function isSelection(eventName:string):boolean {
-        return eventName === Types.Click || eventName === Types.MouseDown;
+        return eventName === types.click || eventName === types.mouseDown;
     }
 
     export class CanvasHitTester {
         public subscribe(eventName:string, canvas:m3.ui.graphics.Canvas):void {
-            var htmlCanvas = canvas.canvas;
+            var htmlCanvas = canvas.htmlCanvas;
             htmlCanvas[eventName] = (e)=> {
                 if (isSelection(eventName)) {
                     var p = normalizeMouseCoordinated(htmlCanvas, e);
@@ -103,7 +107,7 @@ module m3.ui.events {
         }
 
         public unSubscribe(eventName:string, canvas:m3.ui.graphics.Canvas):void {
-            canvas.canvas[eventName] = undefined;
+            canvas.htmlCanvas[eventName] = undefined;
         }
     }
 }
