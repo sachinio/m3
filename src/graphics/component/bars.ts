@@ -1,4 +1,5 @@
 /// <reference path="../../_reference.ts"/>
+/// <reference path="../surface/iSurface.ts"/>
 
 module m3.graphics.component {
     import Rect = m3.graphics.surface.Rect;
@@ -34,20 +35,44 @@ module m3.graphics.component {
             for (let i = 0, len = values.length; i < len; i++) {
                 var rect:m3.graphics.surface.Rect = {
                     x: xScale(i.toString()),
-                    y: yScale(values[i]),
+                    y: <m3.graphics.surface.AnimationDefinition<number>>{
+                        ease: 'bounce',
+                        duration: 1000,
+                        delay: 0,
+                        endValue: yScale(values[i])
+                    },
                     width: xScale.rangeBand(),
-                    height: height - yScale(values[i]),
+                    height: <m3.graphics.surface.AnimationDefinition<number>>{
+                        ease: 'bounce',
+                        duration: 1000,
+                        delay: 0,
+                        endValue: height - yScale(values[i])
+                    },
                     style: {fill: 'green', stroke: ''},
-                    events: {}
-                };
-
-                rect.events[m3.graphics.events.types.mouseDown] = (d:Rect, dm:Rect[])=> {
-                    dm.forEach(dc=>{
-                        if(dc!=d){
-                            dc.style.fill = 'green'
+                    events: {
+                        [m3.graphics.events.types.mouseDown]: (d:Rect, ds:Rect[])=> {
+                            ds.forEach(dc=> {
+                                if (dc != d) {
+                                    dc.style.fill = 'green'
+                                }
+                            });
+                            d.style.fill = d.style.fill === 'green' ? 'red' : 'green'
+                            d.height = <m3.graphics.surface.AnimationDefinition<number>>{
+                                ease: 'bounce',
+                                duration: 1000,
+                                delay: 0,
+                                startValue: <number>d.height,
+                                endValue: 40
+                            };
+                            d.y = <m3.graphics.surface.AnimationDefinition<number>>{
+                                ease: 'bounce',
+                                duration: 1000,
+                                delay: 0,
+                                startValue: <number>d.y,
+                                endValue: height - 40
+                            }
                         }
-                    });
-                    d.style.fill = d.style.fill === 'green' ? 'red' : 'green'
+                    }
                 };
 
                 surface.drawRect(rect);

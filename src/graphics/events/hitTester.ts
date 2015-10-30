@@ -40,8 +40,8 @@ module m3.graphics.events {
         while (i--) {
             var r = rectangles[i];
             if (r.events) {
-                let x2 = r.x + r.width;
-                let y2 = r.y + r.height;
+                let x2 = <number>r.x + <number>r.width;
+                let y2 = <number>r.y + <number>r.height;
                 if (pointInsidePolygon(
                         point,
                         [[r.x, r.y],
@@ -62,7 +62,7 @@ module m3.graphics.events {
         while (i<l) {
             var c = circles[i];
             if (c.events) {
-                if (Math.sqrt(Math.pow((c.x - x), 2) + Math.pow((c.y - y), 2)) <= c.r) {
+                if (Math.sqrt(Math.pow((<number>c.x - x), 2) + Math.pow((<number>c.y - y), 2)) <= <number>c.r) {
                     return c;
                 }
             }

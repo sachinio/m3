@@ -53,7 +53,6 @@ module m3.graphics.surface{
             if (optimize) {
                 roundRectangles = roundRectangles.sort((a, b)=> a.style.stroke.localeCompare(b.style.stroke));
                 //.sort((a, b)=> a.style.fill.localeCompare(b.style.fill));
-                var end = new Date().getTime();
             }
 
             let i = roundRectangles.length;

@@ -3,7 +3,7 @@
 /// <reference path="../../../src/graphics/surface/canvas.ts"/>
 /// <reference path="../../../src/_reference.ts"/>
 
-module m3tests.ui.graphics {
+namespace m3tests.ui.graphics {
 
     describe('Canvas', () => {
         function createCanvasContext(){
@@ -104,22 +104,6 @@ module m3tests.ui.graphics {
             expect(counter).toBe(4);
         });
 
-        it('no optimize rectangle', () => {
-            var surface = m3.graphics.surface.create(createCanvasContext(),false);
-            surface.begin();
-            surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'red',fill:'green'}});
-            surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'green',fill:'green'}});
-            surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'red',fill:'green'}});
-            surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'green',fill:'green'}});
-
-            var counter = 0;
-            spyOn((<any>surface).context, 'stroke').and.callFake(()=>{
-                counter++;
-            });
-            surface.update();
-            expect(counter).toBe(4);
-        });
-
         it('no optimize circle', () => {
             var surface = m3.graphics.surface.create(createCanvasContext(),false);
             surface.begin();
@@ -127,6 +111,23 @@ module m3tests.ui.graphics {
             surface.drawCircle({x:0,y:0,r:10,style:{stroke:'green',fill:'green'}});
             surface.drawCircle({x:0,y:0,r:10,style:{stroke:'red',fill:'green'}});
             surface.drawCircle({x:0,y:0,r:10,style:{stroke:'green',fill:'green'}});
+
+            let counter = 0;
+            spyOn((<any>surface).context, 'stroke').and.callFake(()=>{
+                counter++;
+            });
+            surface.update();
+            expect(counter).toBe(4);
+        });
+
+
+        it('no optimize rectangle', () => {
+            var surface = m3.graphics.surface.create(createCanvasContext(),false);
+            surface.begin();
+            surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'red',fill:'green'}});
+            surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'green',fill:'green'}});
+            surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'red',fill:'green'}});
+            surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'green',fill:'green'}});
 
             var counter = 0;
             spyOn((<any>surface).context, 'stroke').and.callFake(()=>{
@@ -225,7 +226,24 @@ module m3tests.ui.graphics {
             expect(spy).toHaveBeenCalled();
         });
 
-        it('no begin precceding an update should throw',()=>{
+        it('requestAnimation to be called when contains animation definition',()=>{
+            var surface = m3.graphics.surface.create(createCanvasContext(),true);
+            surface.begin();
+            surface.drawRect({x:0,y:0,height:<m3.graphics.surface.AnimationDefinition<number>>
+            {
+                ease:'linear',
+                duration: 500,
+                endValue:20
+            },
+                width:100,
+                style:{stroke:'red',fill:'green'}
+            });
+            var spy = spyOn(surface,'requestAnimation');
+            surface.update();
+            expect(spy).toHaveBeenCalled();
+        });
+
+        it('no begin preceding an update should throw',()=>{
             var surface = m3.graphics.surface.create(createCanvasContext(),true);
             surface.drawRect({x:0,y:0,height:100,width:100,style:{stroke:'red',fill:'green'}});
             expect(()=>surface.update()).toThrow(new Error(m3.strings.CanvasPointerMismatchErrorMessage));
