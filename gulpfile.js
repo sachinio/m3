@@ -1,10 +1,11 @@
 var gulp = require('gulp');
-var typescript = require('gulp-tsc');
+var typescript = require('gulp-typescript');
 var jasmine = require('gulp-jasmine-phantom');
 var stripDebug = require('gulp-strip-debug');
 var del = require('del');
 var addSrc = require('gulp-add-src');
 var concat = require('gulp-concat');
+var reporters = require('jasmine-reporters');
 
 gulp.task('default', ['compile:src'], function () {
 });
@@ -33,7 +34,11 @@ gulp.task('compile:tests', ['compile:src'], function () {
 gulp.task('test', ['compile:tests'], function () {
     return gulp
         .src('bin/tests.js')
-        .pipe(jasmine({integration: true, abortOnFail: true}));
+        .pipe(jasmine({
+            integration: true,
+            abortOnFail: true,
+            reporter: new reporters.JUnitXmlReporter()
+        }));
 });
 
 gulp.task('clean', function () {

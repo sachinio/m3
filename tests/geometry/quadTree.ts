@@ -1,5 +1,5 @@
 /// <reference path="../../src/geometry/quadTree.ts"/>
-/// <reference path="../../typedefs/jasmine.d.ts"/>
+/// <reference path="../../typings/jasmine/jasmine.d.ts"/>
 
 module m3tests.geometry {
     describe('Quad Tree', () => {

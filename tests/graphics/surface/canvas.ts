@@ -1,4 +1,4 @@
-/// <reference path="../../../typedefs/jasmine.d.ts"/>
+/// <reference path="../../../typings/jasmine/jasmine.d.ts"/>
 /// <reference path="../../../src/graphics/surface/iSurface.ts"/>
 /// <reference path="../../../src/graphics/surface/canvas.ts"/>
 /// <reference path="../../../src/_reference.ts"/>
